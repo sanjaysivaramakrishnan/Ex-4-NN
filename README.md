@@ -1,8 +1,8 @@
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>ENTER YOUR NAME : SANJAY SIVARAMAKRISHNAN M</H3>
+<H3>ENTER YOUR REGISTER NO : 212223240151</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE: 21-04-2025</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
@@ -115,12 +115,57 @@ Normalize our dataset.
 8. Finally, call the functions confusion_matrix(), and the classification_report() in order to evaluate the performance of our classifier.
 
 <H3>Program:</H3> 
+```
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler,LabelEncoder
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import confusion_matrix, classification_report
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+col = ['sepal_length','sepal_width','petal_lenght','petal_width','Class']
+df = pd.read_csv(url,names=col)
+df.head()
 
-Insert your code here
+#### Data splitting :
+X = df.iloc[:,:-1]
+y = df.select_dtypes(include= ['object'])
+print(X.head())
+print(y.head())
+y.Class.unique()  # Unique classes in the Class column 
+
+#### Transforming Categorical Data to Numerical :
+le = LabelEncoder()
+y['Class'] = le.fit_transform(y['Class'])
+y.Class.unique()
+
+#### Train Test Split :
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2)
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.fit_transform(X_test)
+
+####  Model implementation :
+mlp_model = MLPClassifier(hidden_layer_sizes = (10,10,10),activation='relu',max_iter = 1000)
+
+mlp_model.fit(X_train,y_train.values.ravel())
+prediction = mlp_model.predict(X_test)
+print(prediction)
+
+#### Evaluation of the algorithm :
+print(confusion_matrix(y_test,prediction))
+print(classification_report(y_test,prediction))
+
+```
 
 <H3>Output:</H3>
+![image](https://github.com/user-attachments/assets/e33cf2ed-9565-4455-bba6-102912fab407)
+![image](https://github.com/user-attachments/assets/4c171ebf-0694-4941-ba37-9ebd47344b15)
+![image](https://github.com/user-attachments/assets/57f45931-2d9d-4ace-895f-94ab9a87f36b)
+![image](https://github.com/user-attachments/assets/91f663e8-6bf8-4a94-af91-e2369a2220fb)
+![image](https://github.com/user-attachments/assets/a13aec33-0a6b-43d6-b3fb-b8bf20032a8c)
+![image](https://github.com/user-attachments/assets/df84ffea-3a60-4e6f-95fb-ab5f1d2075cc)
 
-Show your results here
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
